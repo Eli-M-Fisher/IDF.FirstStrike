@@ -74,5 +74,21 @@ namespace Services
 
             return terrorist.Rank * weaponScore;
         }
+
+        public Terrorist? GetMostReportedTerrorist(List<Terrorist> terrorists)
+        {
+            if (_intelMessages.Count == 0 || terrorists.Count == 0)
+                return null;
+
+            var reportCounts = terrorists
+                .Select(t => new {
+                    Terrorist = t,
+                    Count = _intelMessages.Count(m => m.TerroristTarget == t)
+                })
+                .OrderByDescending(x => x.Count)
+                .FirstOrDefault();
+
+            return reportCounts?.Terrorist;
+        }
     }
 }

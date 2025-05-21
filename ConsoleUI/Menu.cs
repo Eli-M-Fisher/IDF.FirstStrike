@@ -36,6 +36,12 @@ namespace ConsoleUI
                 {
                     case "1":
                         Console.WriteLine($"Total Intel Messages: {aman.Messages.Count}");
+                        var mostReported = strikeService.GetMostReportedTerrorist(hamas.Terrorists);
+                        if (mostReported != null)
+                        {
+                            int count = aman.Messages.Count(m => m.TerroristTarget == mostReported);
+                            Console.WriteLine($"Most Reported Terrorist: {mostReported.Name} ({count} reports)");
+                        }
                         break;
                     case "2":
                         Console.WriteLine(idf.ReportAllUnits());
@@ -78,7 +84,7 @@ namespace ConsoleUI
 
                                 log.AddEntry(new Logs.StrikeLogEntry(
                                     target,
-                                    "Commander Eli",
+                                    "Commander Israel",
                                     unit.Name,
                                     DateTime.Now,
                                     success,
