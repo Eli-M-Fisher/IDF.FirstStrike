@@ -1,6 +1,3 @@
-
-
-
 using System;
 using Data;
 using Services;
@@ -9,6 +6,8 @@ using Intelligence;
 using IDF;
 using Microsoft.VisualBasic;
 using System.ComponentModel;
+
+    
 
 namespace ConsoleUI
 {
