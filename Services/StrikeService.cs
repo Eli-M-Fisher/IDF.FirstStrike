@@ -63,5 +63,16 @@ namespace Services
                 .OrderByDescending(m => m.Timestamp)
                 .FirstOrDefault();
         }
+
+        public int GetTerroristQualityScore(Terrorist terrorist)
+        {
+            int weaponScore = terrorist.Weapons.Sum(w =>
+                w == WeaponType.Knife ? 1 :
+                w == WeaponType.Gun ? 2 :
+                3 // M16 or AK47
+            );
+
+            return terrorist.Rank * weaponScore;
+        }
     }
 }

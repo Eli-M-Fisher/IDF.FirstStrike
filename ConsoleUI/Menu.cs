@@ -44,7 +44,25 @@ namespace ConsoleUI
                     case "3":
                         var dangerous = strikeService.GetMostDangerousTerrorist(hamas.Terrorists);
                         if (dangerous != null)
-                            Console.WriteLine($"Most Dangerous: {dangerous.Name}, Rank {dangerous.Rank}");
+                        {
+                            Console.WriteLine($"Most Dangerous Terrorist:");
+                            Console.WriteLine($"- Name: {dangerous.Name}");
+                            Console.WriteLine($"- Rank: {dangerous.Rank}");
+                            Console.WriteLine($"- Weapons: {string.Join(", ", dangerous.Weapons)}");
+                            int score = strikeService.GetTerroristQualityScore(dangerous);
+                            Console.WriteLine($"- Quality Score: {score}");
+
+                            var lastIntel = strikeService.GetLatestIntel(dangerous);
+                            if (lastIntel != null)
+                            {
+                                Console.WriteLine($"- Last Known Location: {lastIntel.Location} at {lastIntel.Timestamp}");
+                                Console.WriteLine($"- Intel Confidence: {lastIntel.ConfidenceScore}");
+                            }
+                            else
+                            {
+                                Console.WriteLine("- No recent intelligence available.");
+                            }
+                        }
                         break;
                     case "4":
                         var target = strikeService.GetMostDangerousTerrorist(hamas.Terrorists);
