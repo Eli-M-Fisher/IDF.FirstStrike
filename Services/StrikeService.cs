@@ -1,5 +1,3 @@
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +59,7 @@ namespace Services
         public IntelligenceMessage? GetLatestIntel(Terrorist terrorist)
         {
             return _intelMessages
-                .Where(m => m.Target == terrorist)
+                .Where(m => m.TerroristTarget == terrorist)
                 .OrderByDescending(m => m.Timestamp)
                 .FirstOrDefault();
         }

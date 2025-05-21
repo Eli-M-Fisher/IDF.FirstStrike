@@ -4,8 +4,8 @@ using IDF;
 using IDF.StrikeUnits;
 using Enemies;
 using Intelligence;
-using Core;
-using Utils;
+using Core; // Make sure the namespace Core exists and contains Status and WeaponType
+using Utils; // Ensure this namespace contains RandomGenerator
 
 namespace Data
 {
@@ -24,7 +24,7 @@ namespace Data
 
         public static Hamas InitializeHamas()
         {
-            var hamas = new Hamas("Yahya Sinwar", new DateTime(1987, 12, 14));
+            var hamas = new Hamas("Yahya Sinwar", new DateTime(1987, 12, 14), new List<Terrorist>());
 
             for (int i = 0; i < 6; i++)
             {
