@@ -3,17 +3,14 @@ namespace Enemies
     public class Hamas
     {
         public string CommanderName { get; set; }
+        public DateTime DateOfFormation { get; set; }
+        public List<Terrorist> Terrorists { get; set; }
 
-        // mשybe latter we will change the type of this prpoperty
-        public string DateOfFormition { get; set; }
-
-        public List<Terorrist> Terorrists { get; set; }
-
-        public Hamas(string commanderName, string dateOfFormition, List<Terorrist> terorist)
+        public Hamas(string commanderName, DateTime dateOfFormation, List<Terrorist> terrorists)
         {
             CommanderName = commanderName;
-            DateOfFormition = dateOfFormition;
-            Terorrists = terorist;
+            DateOfFormation = dateOfFormation;
+            Terrorists = terrorists;
         }
     }
 }
