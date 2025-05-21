@@ -6,8 +6,9 @@ using Intelligence;
 using IDF;
 using Microsoft.VisualBasic;
 using System.ComponentModel;
+using Core;
 
-    
+
 
 namespace ConsoleUI
 {
@@ -135,20 +136,25 @@ namespace ConsoleUI
 
         }
 
-
-        private static List<string> TeroristsByWeponType(List<Terrorist> terrorists, string weaponType)
+        private static List<string> TeroristsByWeponType(List<Terrorist> terrorists, string weaponTypeString)
         {
-            List<string> teorristsByTypeofWapone = new List<string> { };
-            foreach (var terorist in terrorists)
+            var terroristsByWeaponType = new List<string>();
+
+            
+            WeaponType weaponEnum = (WeaponType)Enum.Parse(typeof(WeaponType), weaponTypeString, ignoreCase: true);
+
+            foreach (var terrorist in terrorists)
             {
-                if (terorist.Weapons.Contains(weaponType))
+                if (terrorist.Weapons.Contains(weaponEnum))
                 {
-                    teorristsByTypeofWapone.Add(terorist.Name);
+                    terroristsByWeaponType.Add(terrorist.Name);
                 }
             }
 
-            return teorristsByTypeofWapone;
-
+            return terroristsByWeaponType;
         }
+
+
+
     }
 }
