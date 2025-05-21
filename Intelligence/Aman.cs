@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Intelligence
 {
     public class Aman
