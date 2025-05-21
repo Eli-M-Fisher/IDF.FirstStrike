@@ -7,6 +7,8 @@ using Services;
 using Enemies;
 using Intelligence;
 using IDF;
+using Microsoft.VisualBasic;
+using System.ComponentModel;
 
 namespace ConsoleUI
 {
@@ -29,7 +31,8 @@ namespace ConsoleUI
                 Console.WriteLine("2. Show Strike Unit Status");
                 Console.WriteLine("3. Identify Most Dangerous Terrorist");
                 Console.WriteLine("4. Recommend Strike");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("5.Search for a terrorist by name or weapon ");
+                Console.WriteLine("6. Exit");
                 Console.Write("Enter your choice: ");
                 input = Console.ReadLine();
 
@@ -57,7 +60,42 @@ namespace ConsoleUI
                                 : "No suitable unit available.");
                         }
                         break;
+
+
                     case "5":
+                        Console.WriteLine("How would you like to search?\n" +
+                                            "1.by name?\n" +
+                                            "2.by weapon type?");
+                        string option = Console.ReadLine();
+
+                        if (option == "1")
+                        {
+                            Console.WriteLine("enter name for search");
+                            string name = Console.ReadLine();
+                            string result = SearchTeroristByName(hamas.Terrorists, name);
+                            Console.WriteLine(result);
+
+                        }
+
+                        else if (option == "2")
+                        {
+                            Console.WriteLine("enter type of weapon for search");
+                            string weaponType = Console.ReadLine();
+                            List<string> teroristByName = TeroristsByWeponType(hamas.Terrorists, weaponType);
+                            Console.WriteLine("here is the list of terrorist sorted by weapone type:");
+                            foreach (var Terrorist in teroristByName)
+                            {
+                                Console.WriteLine(Terrorist);
+                            }
+
+                        }
+
+
+
+                        break;
+
+
+                    case "6":
                         Console.WriteLine("Exiting...");
                         break;
                     default:
@@ -68,7 +106,7 @@ namespace ConsoleUI
                 Console.WriteLine("Press Enter to continue...");
                 Console.ReadLine();
 
-            } while (input != "5");
+            } while (input != "6");
         }
 
         private static IDF.StrikeUnits.TargetType ConvertLocationToTargetType(string location)
@@ -80,6 +118,38 @@ namespace ConsoleUI
                 "outside" => IDF.StrikeUnits.TargetType.OpenArea,
                 _ => IDF.StrikeUnits.TargetType.People
             };
+        }
+
+
+        private static string SearchTeroristByName(List<Terrorist> terrorists, string name)
+        {
+            foreach (var terorist in terrorists)
+            {
+                if (terorist.Name == name)
+                {
+                    string result = "$teh name you entered is in the list of tsrrorist";
+                    return result;
+                }
+            }
+            return "the name you enterd not in terrorist list";
+
+
+        }
+
+
+        private static List<string> TeroristsByWeponType(List<Terrorist> terrorists, string weaponType)
+        {
+            List<string> teorristsByTypeofWapone = new List<string> { };
+            foreach (var terorist in terrorists)
+            {
+                if (terorist.Weapons.Contains(weaponType))
+                {
+                    teorristsByTypeofWapone.Add(terorist.Name);
+                }
+            }
+
+            return teorristsByTypeofWapone;
+
         }
     }
 }
