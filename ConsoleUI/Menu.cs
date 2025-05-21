@@ -1,6 +1,3 @@
-
-
-
 using System;
 using Data;
 using Services;
@@ -19,6 +16,7 @@ namespace ConsoleUI
             var hamas = DataInitializer.InitializeHamas();
             var aman = DataInitializer.InitializeAman(hamas.Terrorists);
             var strikeService = new StrikeService(idf.StrikeUnits, aman.Messages);
+            var log = new Logs.StrikeLog();
 
             string input;
             do
@@ -29,7 +27,8 @@ namespace ConsoleUI
                 Console.WriteLine("2. Show Strike Unit Status");
                 Console.WriteLine("3. Identify Most Dangerous Terrorist");
                 Console.WriteLine("4. Recommend Strike");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("5. Show Strike Log Report");
+                Console.WriteLine("6. Exit");
                 Console.Write("Enter your choice: ");
                 input = Console.ReadLine();
 
@@ -67,15 +66,42 @@ namespace ConsoleUI
                     case "4":
                         var target = strikeService.GetMostDangerousTerrorist(hamas.Terrorists);
                         var intel = strikeService.GetLatestIntel(target);
-                        if (intel != null)
+                        if (target != null && intel != null)
                         {
                             var unit = strikeService.RecommendStrikeUnit(ConvertLocationToTargetType(intel.Location));
-                            Console.WriteLine(unit != null
-                                ? $"Recommended Unit: {unit.Name}"
-                                : "No suitable unit available.");
+                            if (unit != null)
+                            {
+                                unit.ConsumeAmmo();
+                                unit.ConsumeFuel();
+
+                                bool success = new Random().Next(100) < intel.ConfidenceScore;
+
+                                log.AddEntry(new Logs.StrikeLogEntry(
+                                    target,
+                                    "Commander Eli",
+                                    unit.Name,
+                                    DateTime.Now,
+                                    success,
+                                    $"Location: {intel.Location}, Confidence: {intel.ConfidenceScore}"
+                                ));
+
+                                Console.WriteLine($"Strike executed on {target.Name} using {unit.Name}.");
+                                Console.WriteLine($"Result: {(success ? "SUCCESS" : "FAILURE")}");
+                            }
+                            else
+                            {
+                                Console.WriteLine("No suitable unit available for this strike.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No valid target or intelligence available.");
                         }
                         break;
                     case "5":
+                        Console.WriteLine(log.GenerateReport());
+                        break;
+                    case "6":
                         Console.WriteLine("Exiting...");
                         break;
                     default:
@@ -86,7 +112,7 @@ namespace ConsoleUI
                 Console.WriteLine("Press Enter to continue...");
                 Console.ReadLine();
 
-            } while (input != "5");
+            } while (input != "6");
         }
 
         private static IDF.StrikeUnits.TargetType ConvertLocationToTargetType(string location)
