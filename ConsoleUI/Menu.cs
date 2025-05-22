@@ -28,7 +28,8 @@ namespace ConsoleUI
                 Console.WriteLine("3. Identify Most Dangerous Terrorist");
                 Console.WriteLine("4. Recommend Strike");
                 Console.WriteLine("5. Show Strike Log Report");
-                Console.WriteLine("6. Exit");
+                Console.WriteLine("6. Search for Terrorist");
+                Console.WriteLine("7. Exit");
                 Console.Write("Enter your choice: ");
                 input = Console.ReadLine();
 
@@ -108,6 +109,40 @@ namespace ConsoleUI
                         Console.WriteLine(log.GenerateReport());
                         break;
                     case "6":
+                        Console.Write("Search by name or weapon? (name/weapon): ");
+                        string choice = Console.ReadLine()?.Trim().ToLower();
+
+                        if (choice == "name")
+                        {
+                            Console.Write("Enter name to search: ");
+                            string name = Console.ReadLine();
+                            string result = SearchingService.SearchTerroristByName(hamas.Terrorists, name);
+                            Console.WriteLine(result);
+                        }
+                        else if (choice == "weapon")
+                        {
+                            Console.Write("Enter weapon type (e.g., AK47, M16): ");
+                            string weaponInput = Console.ReadLine();
+                            var matches = SearchingService.TerroristsByWeaponType(hamas.Terrorists, weaponInput);
+                            if (matches.Count > 0)
+                            {
+                                Console.WriteLine("Matching terrorists:");
+                                foreach (var name in matches)
+                                {
+                                    Console.WriteLine($"- {name}");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("No terrorists found with that weapon.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid search option.");
+                        }
+                        break;
+                    case "7":
                         Console.WriteLine("Exiting...");
                         break;
                     default:
@@ -118,7 +153,7 @@ namespace ConsoleUI
                 Console.WriteLine("Press Enter to continue...");
                 Console.ReadLine();
 
-            } while (input != "6");
+            } while (input != "7");
         }
 
         private static IDF.StrikeUnits.TargetType ConvertLocationToTargetType(string location)
