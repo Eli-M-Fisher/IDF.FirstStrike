@@ -148,7 +148,7 @@ namespace ConsoleUI
                 if (terrorist.Weapons.Contains(weaponEnum))
                 {
                     terroristsByWeaponType.Add(terrorist.Name);
-                }
+               }
             }
 
             return terroristsByWeaponType;
