@@ -72,7 +72,7 @@ namespace ConsoleUI
                         {
                             Console.WriteLine("enter name for search");
                             string name = Console.ReadLine();
-                            string result = SearchTeroristByName(hamas.Terrorists, name);
+                            string result = SearchingService.SearchTeroristByName(hamas.Terrorists, name);
                             Console.WriteLine(result);
 
                         }
@@ -81,7 +81,7 @@ namespace ConsoleUI
                         {
                             Console.WriteLine("enter type of weapon for search");
                             string weaponType = Console.ReadLine();
-                            List<string> teroristByName = TeroristsByWeponType(hamas.Terrorists, weaponType);
+                            List<string> teroristByName = SearchingService.TeroristsByWeponType(hamas.Terrorists, weaponType);
                             Console.WriteLine("here is the list of terrorist sorted by weapone type:");
                             foreach (var Terrorist in teroristByName)
                             {
@@ -120,39 +120,6 @@ namespace ConsoleUI
             };
         }
 
-
-        private static string SearchTeroristByName(List<Terrorist> terrorists, string name)
-        {
-            foreach (var terorist in terrorists)
-            {
-                if (terorist.Name == name)
-                {
-                    string result = "$teh name you entered is in the list of tsrrorist";
-                    return result;
-                }
-            }
-            return "the name you enterd not in terrorist list";
-
-
-        }
-
-        private static List<string> TeroristsByWeponType(List<Terrorist> terrorists, string weaponTypeString)
-        {
-            var terroristsByWeaponType = new List<string>();
-
-            
-            WeaponType weaponEnum = (WeaponType)Enum.Parse(typeof(WeaponType), weaponTypeString, ignoreCase: true);
-
-            foreach (var terrorist in terrorists)
-            {
-                if (terrorist.Weapons.Contains(weaponEnum))
-                {
-                    terroristsByWeaponType.Add(terrorist.Name);
-               }
-            }
-
-            return terroristsByWeaponType;
-        }
 
 
 
